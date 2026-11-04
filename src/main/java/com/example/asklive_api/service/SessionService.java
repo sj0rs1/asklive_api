@@ -67,9 +67,10 @@ public class SessionService {
         Session session = requireSession(code);
         authService.requireHostOrParticipant(session, hostToken, participantToken);
         Poll activePoll = pollRepository.findBySession_IdAndStatus(session.getId(), PollStatus.ACTIVE).orElse(null);
+        long participantCount = participantRepository.countBySession_Id(session.getId());
         return new SessionStateResponse(session.getCode(), session.getStatus(),
                 activePoll != null ? dtoMapper.toPollResponse(activePoll) : null,
-                visibleQuestions(session.getId()));
+                visibleQuestions(session.getId()), participantCount);
     }
 
     @Transactional
@@ -77,7 +78,8 @@ public class SessionService {
         Session session = requireSession(code);
         authService.requireHost(session, hostToken);
         session.setStatus(SessionStatus.ENDED);
-        broadcaster.publishStatus(session.getCode(), new SessionStatusResponse(SessionStatus.ENDED));
+        broadcaster.publishStatus(session.getCode(),
+                new SessionStatusResponse(SessionStatus.ENDED, participantRepository.countBySession_Id(session.getId())));
     }
 
     @Transactional
@@ -89,6 +91,8 @@ public class SessionService {
         String displayName = request == null ? null : trimToNull(request.displayName());
         Participant participant = participantRepository
                 .save(new Participant(session, tokenService.generateToken(), displayName));
+        broadcaster.publishStatus(session.getCode(),
+                new SessionStatusResponse(SessionStatus.ACTIVE, participantRepository.countBySession_Id(session.getId())));
         return new JoinResponse(participant.getToken());
     }
 

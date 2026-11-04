@@ -9,4 +9,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
 
     Optional<Participant> findByToken(String token);
 
+    Long countBySession_Id(Long sessionId);
+
 }

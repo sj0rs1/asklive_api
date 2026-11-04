@@ -6,6 +6,7 @@ import com.example.asklive_api.domain.Session;
 import com.example.asklive_api.domain.Upvote;
 import com.example.asklive_api.dto.CreateQuestionRequest;
 import com.example.asklive_api.dto.HostQuestionResponse;
+import com.example.asklive_api.dto.HostQuestionResponse;
 import com.example.asklive_api.dto.QuestionResponse;
 import com.example.asklive_api.dto.UpdateQuestionRequest;
 import com.example.asklive_api.error.ApiException;
@@ -71,14 +72,14 @@ public class QuestionService {
     }
 
     @Transactional
-    public QuestionResponse updateStatus(String code, Long questionId, String hostToken,
+    public HostQuestionResponse updateStatus(String code, Long questionId, String hostToken,
             UpdateQuestionRequest request) {
         Session session = sessionService.requireSession(code);
         authService.requireHost(session, hostToken);
         Question question = requireQuestion(session, questionId);
         question.setStatus(request.status());
         broadcaster.publishQuestions(session.getCode(), sessionService.visibleQuestions(session.getId()));
-        return dtoMapper.toQuestionResponse(question);
+        return dtoMapper.toHostQuestionResponse(question);
     }
 
     @Transactional

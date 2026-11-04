@@ -48,6 +48,10 @@ public class DtoMapper {
         return toQuestionResponses(List.of(question)).getFirst();
     }
 
+    public HostQuestionResponse toHostQuestionResponse(Question question) {
+        return toHostQuestionResponses(List.of(question)).getFirst();
+    }
+
     public List<QuestionResponse> toQuestionResponses(List<Question> questions) {
         if (questions.isEmpty()) {
             return List.of();

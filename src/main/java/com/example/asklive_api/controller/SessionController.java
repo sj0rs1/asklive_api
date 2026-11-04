@@ -134,7 +134,7 @@ public class SessionController {
     }
 
     @PatchMapping("/{code}/questions/{questionId}")
-    public QuestionResponse updateQuestion(@PathVariable String code, @PathVariable Long questionId,
+    public HostQuestionResponse updateQuestion(@PathVariable String code, @PathVariable Long questionId,
             @RequestHeader(value = HOST_TOKEN, required = false) String hostToken,
             @Valid @RequestBody UpdateQuestionRequest request) {
         return questionService.updateStatus(code, questionId, hostToken, request);

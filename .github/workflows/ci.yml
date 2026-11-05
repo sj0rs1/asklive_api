@@ -3,13 +3,10 @@ name: AskLive CI/CD
 on:
   push:
     branches:
-      - production
-      - "feature/**"
-      - "functions/**"
-      - "feature-*"
+      - main
   pull_request:
     branches:
-      - production
+      - main
 
 jobs:
   build-and-test:

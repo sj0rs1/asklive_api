@@ -2,11 +2,9 @@ name: AskLive CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build-and-test:
@@ -40,9 +38,9 @@ jobs:
           path: build/libs/*.jar
 
   github-release:
-    name: 2. Create GitHub Release (Production Only)
+    name: 2. Create GitHub Release
     needs: build-and-test
-    if: github.event_name == 'push' && github.ref_name == 'production'
+    if: github.event_name == 'push' && github.ref_name == 'main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -110,7 +108,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
+          port: 22
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
             docker pull ghcr.io/sj0rs1/asklive-api:${{ github.run_number }}
@@ -118,5 +116,8 @@ jobs:
             docker rm asklive_api || true
             docker run -d --name asklive_api \
               -p 8080:8080 \
+              -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/${{ secrets.MYSQL_DATABASE }} \
+              -e SPRING_DATASOURCE_USERNAME=${{ secrets.MYSQL_USER }} \
+              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
               ghcr.io/sj0rs1/asklive-api:${{ github.run_number }}
             docker image prune -f

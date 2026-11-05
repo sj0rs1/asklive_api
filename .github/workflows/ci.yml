@@ -116,7 +116,7 @@ jobs:
             docker rm asklive_api || true
             docker run -d --name asklive_api \
               -p 8080:8080 \
-              -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/${{ secrets.MYSQL_DATABASE }} \
+              -e SPRING_DATASOURCE_URL=jdbc:mysql://172.17.0.1:3306/${{ secrets.MYSQL_DATABASE }} \
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.MYSQL_USER }} \
               -e SPRING_DATASOURCE_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
               ghcr.io/sj0rs1/asklive-api:${{ github.run_number }}

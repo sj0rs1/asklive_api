@@ -92,7 +92,7 @@ jobs:
           push: true
           tags: ghcr.io/sj0rs1/asklive-api:${{ github.run_number }}
 
-      - name: Connect to Fontys Netlab OpenVPN
+      - name: Connect to Fontys Netlab OpenVPN 
         run: |
           sudo apt-get update && sudo apt-get install -y openvpn
           echo "${{ secrets.OPENVPN_USER }}" > vpn-auth.txt

@@ -17,18 +17,32 @@ services:
       retries: 30
 
   api:
-    image: ghcr.io/sj0rs1/asklive-api:${IMAGE_TAG}
+    build:
+      context: .
+    image: asklive_api:local
     container_name: asklive_api
     restart: unless-stopped
     depends_on:
       mysql:
         condition: service_healthy
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+
+  frontend:
+    build:
+      context: ../asklive_frontend
+      args:
+        VITE_API_BASE: ""
+    container_name: asklive_frontend
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "80:80"
 
 volumes:
   mysql_data:

@@ -37,7 +37,7 @@ jobs:
           name: compiled-spring-jar
           path: build/libs/*.jar
 
-  github-release: 
+  github-release:
     name: 2. Create GitHub Release
     needs: build-and-test
     if: github.event_name == 'push' && github.ref_name == 'main'

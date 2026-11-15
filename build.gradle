@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.1.1'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.sonarqube' version '7.5.0.8588'
 }
 
 group = 'com.example'
@@ -16,6 +17,13 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "sj0rs1_asklive_api_80dfc1d9-8174-4d0e-ac60-9238d14ac9c1"
+        property "sonar.projectName", "asklive_api"
+    }
 }
 
 dependencies {

@@ -44,5 +44,14 @@ services:
     ports:
       - "80:80"
 
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    restart: unless-stopped
+    ports:
+      - "8083:9000"
+    environment:
+      - SONAR_JAVA_OPTS=-Xmx1G
+
 volumes:
   mysql_data:

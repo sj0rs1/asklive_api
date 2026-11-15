@@ -63,6 +63,15 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
       - name: Make gradlew executable
         run: chmod +x gradlew
+      - name: Connect to Fontys Netlab OpenVPN
+        run: |
+          sudo apt-get update && sudo apt-get install -y openvpn
+          echo "${{ secrets.OPENVPN_USER }}" > vpn-auth.txt
+          echo "${{ secrets.OPENVPN_PASSWORD }}" >> vpn-auth.txt
+          echo "${{ secrets.OPENVPN_CONFIG }}" > client.ovpn
+          sudo openvpn --config client.ovpn --auth-user-pass vpn-auth.txt --daemon
+          sleep 10
+          rm -f vpn-auth.txt
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

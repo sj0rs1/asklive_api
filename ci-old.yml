@@ -76,8 +76,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        # Run the tests with the JaCoCo agent and generate the XML report
-        # before uploading to SonarQube (the sonar task depends on jacocoTestReport).
         run: ./gradlew clean jacocoTestReport sonar --info
 
   github-release:
@@ -106,7 +104,7 @@ jobs:
           prerelease: false
 
   deploy-to-vps:
-    name: 3. CD - Deploy to VPS
+    name: Deploy to VPS
     needs: build-and-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest

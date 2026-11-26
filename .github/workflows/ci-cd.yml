@@ -27,7 +27,7 @@ jobs:
       - name: Build API
         run: ./gradlew bootJar --no-daemon # compile main sources only, no tests
 
-      - name: Upload JAR
+      - name: Upload JAR to artifact
         uses: actions/upload-artifact@v4
         with:
           name: compiled-backend-jar # name for artifact
@@ -44,7 +44,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@4
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: compiled-backend-jar # artifact name defined earlier

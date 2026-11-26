@@ -95,8 +95,8 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
-        source: "build/libs/*.jar,Dockerfile,deploy.sh" # copies these files over to the target
-        target: /home/sjors/asklive_api # location of project on the vps
+          source: "build/libs/*.jar,Dockerfile,deploy.sh" # copies these files over to the target
+          target: /home/sjors/asklive_api # location of project on the vps
 
       - name: Restart API
         uses: appleboy/ssh-action@v1.0.3

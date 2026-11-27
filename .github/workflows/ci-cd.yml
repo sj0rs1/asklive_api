@@ -73,16 +73,11 @@ jobs:
           name: compiled-backend-jar
           path: build/libs/
 
-      - name: Install OpenVPN # updates system & installs openvpn
-        run: |
-          sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
-
       - name: Write VPN config # writes out OPENVPN_CONFIG secret to a file so it can be used to authenticate
         run: echo "${{ secrets.OPENVPN_CONFIG }}" > client.ovpn
 
       - name: Connect to VPN
-        uses: kota65535/github-openvpn-connect-action@v3 # https://github.com/kota65535/github-openvpn-connect-action
+        uses: kota65535/github-openvpn-connect-action@v3 # https://github.com/kota65535/github-openvpn-connect-action , also installs OpenVPN
         with:
           config_file: client.ovpn
           username: ${{ secrets.OPENVPN_USER }}

@@ -32,18 +32,6 @@ services:
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
 
-  frontend:
-    build:
-      context: ../asklive_frontend
-      args:
-        VITE_API_BASE: ""
-    container_name: asklive_frontend
-    restart: unless-stopped
-    depends_on:
-      - api
-    ports:
-      - "80:80"
-
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
